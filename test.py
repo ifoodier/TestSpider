@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import requests
 import os
+import re
 from bs4 import BeautifulSoup as bs
 """"
 r.status_code #状态 200正常
@@ -227,23 +228,155 @@ NavigableString 非属性字符串，<>...</>中字符串，格式：<tag>.strin
 Comment 字符串的注释部分，一种特殊的Comment类型
 """
 
-url = "https://python123.io/ws/demo.html"
-r = requests.get(url)
-print(r.status_code)
-# 抛出的异常
-print(r.raise_for_status())
-demo = r.text
+# url = "https://python123.io/ws/demo.html"
+# r = requests.get(url)
+# print(r.status_code)
+# # 抛出的异常
+# print(r.raise_for_status())
+# demo = r.text
 # print(demo)
 # 解析器
-soup = bs(demo, 'html.parser')
+# soup = bs(demo, 'html.parser')
 # print(soup.prettify())
-print(soup.title)
+# print(soup.title)
+# print(soup.a)
+# print(soup.a.parent)
+# print(soup.a.parent.parent)
 # 只能获得第一个
-tag = soup.a
-print(tag)
-print(tag.attrs)
-print(type(tag.attrs))
-print(tag.attrs['href'])
-print(type(tag))
-print(soup.a.string)
-print(type(soup.p.string))
+# tag = soup.a
+# print(tag)
+# print(tag.attrs)
+# print(type(tag.attrs))
+# print(tag.attrs['href'])
+# print(type(tag))
+# print(soup.a.string)
+# print(type(soup.p.string))
+# tag = soup.a
+# print(tag)
+"""
+标签树的下行遍历
+.contents 子节点的列表，将<tag>所有儿子节点存入列表
+.children 子节点的迭代类型，与.contents类似，用于循环遍历
+.descendants 子孙节点的迭代类型，包含所有子孙节点，用于循环遍历
+"""
+
+# url = "https://python123.io/ws/demo.html"
+# r = requests.get(url)
+# demo = r.text
+# soup = bs(demo, "html.parser")
+# print(soup.head)
+# print(soup.head.contents)
+# print(soup.body.contents)
+# print(len(soup.body.contents))
+# # print(soup.body.contents[1])
+# for child in soup.body.contents:
+#     print(child)
+# for child in soup.body.children:
+#     print(child)
+
+"""
+标签树的上行遍历
+.parent 节点的父亲比标签
+.parents  节点先辈标签的迭代类型，用于循环遍历先辈节点
+"""
+# url = "https://python123.io/ws/demo.html"
+# r = requests.get(url)
+# demo = r.text
+# soup = bs(demo, "html.parser")
+# # print(soup.title.parent)
+# # print(soup.html.parent) # html是最高级标签，本身
+# # print(soup.parent)
+# for parent in soup.a.parents:
+#     if parent is None:
+#         print(parent)
+#     else:
+#         print(parent.name)
+
+"""
+平行遍历
+.next_sibling 返回按照HTML文本顺序的下一个平行节点标签
+.previous_sibling 返回按照HTML文本顺序的上一个平行节点标签
+.next_siblings 迭代类型，返回按照HTML文本顺序的后续所有平行节点标签
+.previous_siblings 迭代类型，返回按照HTML文本顺序的前续所有平行节点标签
+注意：平行遍历发生在同一个父亲节点下
+"""
+
+# soup = bs(demo, 'html.parser')
+# print(soup)
+# print(soup.a.next_sibling)
+# print(soup.a.next_sibling.next_sibling)
+# print(soup.a.previous_sibling)
+# print(soup.a.previous_sibling.previous_sibling)
+# for sibling in soup.a.next_siblings:
+#     print(sibling)
+
+# url = "https://python123.io/ws/demo.html"
+# r = requests.get(url)
+# demo = r.text
+# soup = bs(demo, 'html.parser')
+# print(soup.prettify())
+# print(soup)
+# print(soup.a.prettify())
+"""
+信息标记和提取方法
+XML <>..</> or < />, 最早的通用信息标记语言，可扩展性好，但繁琐。Internet上的信息交互与传递
+JSON 信息有类型 key: value，适合程序处理（js），较XML简洁。移动应用云端和节点的信息通信，无注释
+YAML 信息无类型 key: value，文本信息比例最高，可读性好。各类系统的配置文件，有注释易读
+"""
+
+"""
+形式解析和搜索方法
+提取HTML中所有URL链接
+1）搜索到所有<a>标签
+2）解析<a>标签格式，提取href后的链接内容
+"""
+# url = "https://python123.io/ws/demo.html"
+# r = requests.get(url)
+# demo = r.text
+# soup = bs(demo, 'html.parser')
+# for link in soup.find_all('a'):
+#     print(link.get('href'))
+
+"""
+<>.find_all(name, attrs, recursive, string **kwargs)
+返回一个列表类型，存储查找的结果
+name：对标签名称的检索字符串
+atrrs: 对标签属性值的检索字符串，可标注属性检索
+recursive:Bool类型，是否对子孙全部检索，默认True
+string: <>...</>中字符串区域的检索字符串
+注:
+    <tag>(..) 等价于 <tag>.find_all(..)
+    soup(..) 等价于 soup.find_all(..) 
+"""
+# for tag in soup.find_all(re.compile('b')):
+#     print(tag.name)
+
+# print(soup.find_all('p', 'course'))
+# print(soup.find_all(id='link1'))
+# print(soup.find_all(id=re.compile('link')))
+# print(soup.find_all('a'))
+# print(soup('a'))
+# print(soup.find_all('a', recursive=False)) # soup的儿子层面没有"a"标签
+# print(soup('a', recursive=False))
+# # print(soup.find_all(string="Basic Python"))
+# print(soup.find_all(string=re.compile('Python')))
+
+"""
+一下方法的参数同.find_all()参数
+<>.find() 搜索返回一个结果，字符串类型
+<>.find_parents 在先辈中搜索，返回列表类型
+<>.find_parent 在先辈中搜索一个，返回字符串
+<>.find_next_siblings() 在后序平行节点中搜索，返回列表
+<>.find_next_sibling() 在后序平行节点中搜索一个，返回字符串
+<>.find_previous_sibling() 在前序平行节点中搜索一个，返回字符串
+<>.find_previous_siblings() 在前序平行节点中搜索，返回列表
+"""
+
+# robots协议
+# url = "http://www.jd.com/"
+# # r = requests.get(url+'robots.txt')
+# r = requests.get(url)
+# print(r.url)
+# demo = r.text
+# soup = bs(demo, 'html.parser')
+# print(soup.prettify())
