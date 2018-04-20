@@ -241,3 +241,9 @@ print(soup.title)
 # 只能获得第一个
 tag = soup.a
 print(tag)
+print(tag.attrs)
+print(type(tag.attrs))
+print(tag.attrs['href'])
+print(type(tag))
+print(soup.a.string)
+print(type(soup.p.string))
