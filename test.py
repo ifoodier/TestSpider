@@ -322,10 +322,10 @@ YAML 信息无类型 key: value，文本信息比例最高，可读性好。各�
 1）搜索到所有<a>标签
 2）解析<a>标签格式，提取href后的链接内容
 """
-url = "https://python123.io/ws/demo.html"
-r = requests.get(url)
-demo = r.text
-soup = bs(demo, 'html.parser')
+# url = "https://python123.io/ws/demo.html"
+# r = requests.get(url)
+# demo = r.text
+# soup = bs(demo, 'html.parser')
 # for link in soup.find_all('a'):
 #     print(link.get('href'))
 
@@ -346,12 +346,12 @@ string: <>...</>中字符串区域的检索字符串
 # print(soup.find_all('p', 'course'))
 # print(soup.find_all(id='link1'))
 # print(soup.find_all(id=re.compile('link')))
-print(soup.find_all('a'))
-print(soup('a'))
-print(soup.find_all('a', recursive=False)) # soup的儿子层面没有"a"标签
-print(soup('a', recursive=False))
-# print(soup.find_all(string="Basic Python"))
-print(soup.find_all(string=re.compile('Python')))
+# print(soup.find_all('a'))
+# print(soup('a'))
+# print(soup.find_all('a', recursive=False)) # soup的儿子层面没有"a"标签
+# print(soup('a', recursive=False))
+# # print(soup.find_all(string="Basic Python"))
+# print(soup.find_all(string=re.compile('Python')))
 
 """
 一下方法的参数同.find_all()参数
@@ -363,3 +363,12 @@ print(soup.find_all(string=re.compile('Python')))
 <>.find_previous_sibling() 在前序平行节点中搜索一个，返回字符串
 <>.find_previous_siblings() 在前序平行节点中搜索，返回列表
 """
+
+# robots协议
+# url = "http://www.jd.com/"
+# # r = requests.get(url+'robots.txt')
+# r = requests.get(url)
+# print(r.url)
+# demo = r.text
+# soup = bs(demo, 'html.parser')
+# print(soup.prettify())
